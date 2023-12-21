@@ -1,8 +1,23 @@
 const Project = require("../models/projectModel");
 
+// const getProjects = async (req, res) => {
+//   try {
+//     const projects = await Project.find();
+//     res.status(200).json(projects);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 const getProjects = async (req, res) => {
   try {
-    const projects = await Project.find();
+    const search = {};
+
+    if (req.query.title) {
+      search.title = new RegExp(req.query.title, "i");
+    }
+
+    const projects = await Project.find(search);
     res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: error.message });
