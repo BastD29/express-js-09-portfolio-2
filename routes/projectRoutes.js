@@ -4,9 +4,11 @@ const {
   getProjects,
   createProjects,
   getProjectById,
+  getOptions,
 } = require("../controllers/projectController");
 
 router.get("/", getProjects);
+router.get("/options", getOptions);
 router.get("/:id", getProjectById);
 router.post("/", createProjects);
 
