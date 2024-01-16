@@ -27,7 +27,16 @@ const getProjects = async (req, res) => {
       filter.frameworks = req.query.framework;
     }
 
+    if (req.query.stack) {
+      filter.stack = req.query.stack;
+    }
+
+    if (req.query.style) {
+      filter.styles = req.query.style;
+    }
+
     const projects = await Project.find(filter);
+
     res.status(200).json(projects);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -59,10 +68,18 @@ const createProjects = async (req, res) => {
 
 const getOptions = async (req, res) => {
   try {
-    // here, be careful with the naming of the parameter: it should correspond to the one in the model
+    // * here, be careful with the naming of the parameter: it should correspond to the one in the model
     const languageOptions = await Project.find().distinct("languages");
     const frameworkOptions = await Project.find().distinct("frameworks");
-    res.json({ languages: languageOptions, frameworks: frameworkOptions });
+    const stackOptions = await Project.find().distinct("stack");
+    const styleOptions = await Project.find().distinct("styles");
+
+    res.json({
+      languages: languageOptions,
+      frameworks: frameworkOptions,
+      stack: stackOptions,
+      styles: styleOptions,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
